@@ -316,3 +316,84 @@ and we can see in the log when we run the server that the debugger is active
 just grap the Bootstrap link and add it to base.html
 
 to test our code we navbar in the base tempalte and every child will have nav in it`s code
+
+*** Flask Tutorial #4 - HTTP Methods (GET/POST) & Retrieving Form Data ***
+
+- we will create page with dialog box that when we prees the submit button the data go to the server using POST method
+the routes that we decorate in our script (app.py) has Get method by defualt but if we want to add get and post 
+we have to use methods argument
+
+-------------------code----------------------
+@app.route("/login", methods=["POST", "GET"])
+-------------------code----------------------
+
+- now we define login and user 
+-------------------code----------------------
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    return render_template("form.html")
+
+
+@app.route("/<usr>")
+def user(usr):
+    return f"<h1>{usr}</h1>"
+
+-------------------code----------------------
+
+now we craete login.html and inside the content we set the form action to # which means we want 
+to post the information in the same page of course with post methos
+and we change the input 
+-------------------code----------------------
+<form action="#" method="post">
+
+<input
+      type="text"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      name="nm"      #=> add name
+
+
+
+<button type="submit" class="btn btn-primary" value="submit">Submit</button>  => we set the value to submit
+-------------------code----------------------
+
+now we check the log to see that when submit there is POST method or GET method when we refresh our page
+-------------------code----------------------
+127.0.0.1 - - [17/May/2024 18:25:06] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2024 18:25:10] "GET /login HTTP/1.1" 200 -
+-------------------code----------------------
+
+-  we determine in this login function whether we called the get
+request or whether we call the post request
+
+first we import request
+-------------------code----------------------
+from flask import Flask, redirect, url_for, render_template, request
+-------------------code----------------------
+
+- then we will write logice like if request is post to do some thing but if the request is not POST 
+which means we didn`t submit the the form button render the login.html in other word keep rendering login.html
+unless we submit the button
+
+-------------------code----------------------
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        return do somthing
+    else:
+        return render_template("login.html")
+-------------------code----------------------
+
+now to acces to the value of the form 
+to do that user equals request.form["the value of the dictionary key of the html element"]
+
+here we create varible and saved the user from the form then redirect to that user page
+-------------------code----------------------
+def login():
+    if request.method == "POST":
+        user = request.form["nm"]
+        return return redirect(url_for("user", usr=user))
+    else:
+        return render_template("login.html")
+-------------------code----------------------
