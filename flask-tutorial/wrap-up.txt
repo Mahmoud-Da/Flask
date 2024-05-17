@@ -1,0 +1,137 @@
+Flask Tutorial #1
+
+- flask is
+a micro web framework for building
+websites with Python.
+
+
+- typically used as kind of a back-end and
+then another front-end is connected to
+it using something called a restful api
+
+- flask itself so this is more of a micro framework rather than a full-fledged web
+framework and that also means that it doesn't include a lot of the nice tools
+that come with Django like user authentication and database connectivity and all of those kind of things.
+
+- how to build a page using a flask
+- create a folder "flask-tutorial"
+- first we install flask 
+  -- cd flask-tutorial
+  -- pip install flask
+
+- now we will create tutorial1.py
+- inside the tutorial1.py
+
+- first we will import flask
+-------------------code----------------------
+from flask import Flask
+-------------------code----------------------
+
+- create an instance of a flask web application
+-------------------code----------------------
+app = Flask(__name__)
+-------------------code----------------------
+
+- run the app
+-------------------code----------------------
+if __name__ == "__main__":
+    app.run()
+-------------------code----------------------
+
+- define the pages that will be on our website so
+the first page we will called home so make a function and this 
+function is gonna return what's gonna be displayed on the page
+
+we're gonna return some inline HTML now all that means is you can literally just
+write HTML in this string or you can just write some text and that will be
+displayed as well
+
+-------------------code----------------------
+def home():
+    return "Hello! this is the main page"
+-------------------code----------------------
+
+even we can add a link could add like an h1 tag
+
+-------------------code----------------------
+def home():
+    return "Hello! this is the main page <h1>Hello</h1>"
+-------------------code----------------------
+
+
+last step is define how we can access this specific page
+so right now flask actually doesn't know where we should be going to get to this
+page so we need to give it a route now
+
+to do that gonna decorate
+this function with app dot root so put
+
+the @ sign then app dot root and inside
+here we're gonna define the path that we
+want to use to get to this function
+
+-------------------code----------------------
+@app.route("/") => defualt path
+
+or 
+@app.route("/home") => function name
+-------------------code----------------------
+
+- run the application
+-------------------code----------------------
+python3 "tutorial1.py"
+-------------------code----------------------
+
+- if we tried to go to undefined route we will have error 
+
+- now we are going to create another page 
+actually decide to put some
+things in beside in between tags of app.route like
+this this means that whenever I type
+
+something it's actually gonna grab that
+value and pass it to the function as a
+parameter
+-------------------code----------------------
+@app.route("/<name>")
+def user(name):
+    return f"Hello {name}"
+-------------------code----------------------
+
+which means if i @app.route("/<name>")
+if i enter th url ex: http://127.0.0.1:5000/car
+
+i will have 
+Hello car
+
+ex: http://127.0.0.1:5000/dodo
+i will have 
+Hello dodo
+
+
+- now if we want to get to a different page
+sometimes user goes to a page
+maybe they're not supposed to be there
+they're not authenticated we need to
+redirect them
+
+first 
+-------------------code----------------------
+from flask import Flask, redirect, url_for
+-------------------code----------------------
+
+these [redirect, url_for] are going
+to allow us to actually return a
+redirect from a specific function
+
+-------------------code----------------------
+@app.route("/admin")
+def admin():
+    return redirect(url_for("home"))
+-------------------code----------------------
+here we go to admin it will redirect us to what we have in home function otherword the home function
+
+
+
+Youtube:
+https://www.youtube.com/watch?v=mqhxxeeTbu0&t=7s
