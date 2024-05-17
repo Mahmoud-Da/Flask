@@ -1,4 +1,4 @@
- *** Flask Tutorial #1  ***
+*** Flask Tutorial #1  ***
 
 - flask is
 a micro web framework for building
@@ -251,3 +251,68 @@ HTML:
   {% endif %}
 {% endfor %}
 -------------------code----------------------
+
+
+*** Flask Tutorial #3 - Adding Bootstrap and Template Inheritance *** 
+
+template inheritance: which is an extremely useful tool so you're not
+repeating HTML code or JavaScript orwhatever it's gonna be throughout your
+entire website it essentially allows you to create kind of a base template thatevery
+other one of your templates will work off of
+
+fisrt we are going to create a html file we called base.html and craete inside it html template
+
+
+inheritance that:
+essentially means use
+everything from the "base code/ tempalte" and then change a few small
+things are overwrite some functionality of the parent which in this
+case is gonna be the base.html
+
+so the way that we can allow our child
+templates to change specific functionality of the base template is by
+adding something called blocks and we can name it for this example we can use content, title any parameter
+so in the base.html (parent tempalte)
+-------------------code----------------------
+title>{% block title%} {% endblock title%}</title>
+
+# and inside the body
+{% block content %} {% endblock content %}
+-------------------code----------------------
+
+in the index.html (child tempalte)
+first we extend the block
+ex: {% extends 'path to the file' %}
+what we add what we want between the blocks
+-------------------code----------------------
+{% extends 'base.html' %} {% block title%} Home Page {% endblock title%} {%
+block content %}
+<h1>Test</h1>
+{% endblock content %}
+
+-------------------code----------------------
+
+PS:
+if we set app.run to debug= true 
+
+allow us to not have to rerun the server every time
+we make a change because it will automatically be detecting those changes 
+and updating the website for us
+-------------------code----------------------
+if __name__ == "__main__":
+    app.run(debug=True)
+-------------------code----------------------
+
+and we can see in the log when we run the server that the debugger is active
+-------------------code----------------------
+ * Debugger is active!
+ * Debugger PIN: 458-486-685
+127.0.0.1 - - [17/May/2024 16:01:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [17/May/2024 16:01:30] "GET / HTTP/1.1" 200 -
+-------------------code----------------------
+
+
+- to add Bootstrap
+just grap the Bootstrap link and add it to base.html
+
+to test our code we navbar in the base tempalte and every child will have nav in it`s code
