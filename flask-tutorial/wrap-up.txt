@@ -1,4 +1,4 @@
-Flask Tutorial #1
+ *** Flask Tutorial #1  ***
 
 - flask is
 a micro web framework for building
@@ -133,5 +133,121 @@ here we go to admin it will redirect us to what we have in home function otherwo
 
 
 
-Youtube:
-https://www.youtube.com/watch?v=mqhxxeeTbu0&t=7s
+- how to redirect to function that has arguments
+
+-------------------code----------------------
+@app.route("/admin")
+def admin():
+    return redirect(url_for("user", name="moody!"))
+-------------------code----------------------
+with that 
+t's gonna return the URL for user and it's gonna
+pass through the argument admin which means it will print "Hello moody!"
+
+
+if ww add // to the router we can access 
+-------------------code----------------------
+@app.route("/admin/")
+-------------------code----------------------
+we can access
+http://127.0.0.1:5000/admin/ or
+http://127.0.0.1:5000/admin
+
+*** Flask Tutorial #2 - HTML Templates *** 
+how we can use our own HTML Javascript CSS all of
+that with this kind of Python back-end
+
+- we will import  render_template
+function is gonna allow us to do is
+actually grab a DML file
+-------------------code----------------------
+from flask import Flask, redirect, url_for, render_template
+-------------------code----------------------
+- creating an HTML file and we need to put that in a specific directory we must named templates and must be
+near our script which run the web application (tutorial2.py)
+inside we will craete html files ex: index.html
+
+to render it 
+in the script file we we return render_template("{html file name}.html")
+-------------------code----------------------
+def home():
+    return render_template("index.html")
+-------------------code----------------------
+
+
+- how to show dynamic information ex: display the user name on the screen
+-------------------code----------------------
+@app.route("/<name>")
+def home(name):
+    return render_template("index.html")
+-------------------code----------------------
+
+- in our html file by using {{}} we can type like parameter ex
+-------------------code----------------------
+<p>Hello! {{content}}</p>
+-------------------code----------------------
+
+- then in the home function we can set the content parameter to the name of home parameter
+-------------------code----------------------
+def home(name):
+    return render_template("index.html", content=name)
+-------------------code----------------------
+
+- we can also add multi parameters
+-------------------code----------------------
+def home(name):
+    return render_template("index.html", content=name, number=2)
+-------------------code----------------------
+
+-------------------code----------------------
+<body>
+  <h1>Home Page!</h1>
+  <p>Hello! {{content}}</p>
+  <p>id {{number}}</p>
+</body>
+-------------------code----------------------
+
+- if we want to pass alot of parameters 
+we can type python code inside the html templates by adding {% inside we write the code %}
+-------------------code----------------------
+{% for i in range(0, 10) %}
+  <p>Hello</p>
+{% endfor%}
+-------------------code----------------------
+
+the same thing for if statement
+-------------------code----------------------
+{% for x in range(0, 10) %}
+{% if x % 2 == 1 %}
+  <p>{{x}}</p>
+{% endif %}
+{% endfor%}
+-------------------code----------------------
+
+
+- more examples 
+- pass list to our index
+-------------------code----------------------
+def home(name):
+    return render_template("index.html", content=name, number=2, list_content=["jim", "lili", "moody"])
+
+HTML:
+
+{% for x in list_content %}
+ <p>{{x}}</p>
+{% endfor %}
+
+-------------------code----------------------
+
+- add multi conditions to the list 
+-------------------code----------------------
+{% for x in list_content %}
+  {% if x == "jim" %}
+    <p>Hello miss {{x}}</p>
+  {% elif x == "lili" %}
+    <p>Hello madam {{x}}</p>
+  {% else %}
+    <p>Hello  {{x}}</p>
+  {% endif %}
+{% endfor %}
+-------------------code----------------------
