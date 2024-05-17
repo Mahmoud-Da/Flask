@@ -18,5 +18,10 @@ def admin():
     return redirect(url_for("home"))
 
 
+@app.route("/client")
+def client():
+    return redirect(url_for("user", name="moody!"))
+
+
 if __name__ == "__main__":
     app.run()

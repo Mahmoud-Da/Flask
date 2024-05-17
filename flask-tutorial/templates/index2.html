@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Home Page!</h1>
+
+    <!-- loop a list -->
+    {% for x in list_content %}
+    <p>{{x}}</p>
+    {% endfor %}
+
+    <!-- loop a list -->
+    {% for x in list_content %} {% if x == "jim" %}
+    <p>Hello miss {{x}}</p>
+    {% elif x == "lili" %}
+    <p>Hello madam {{x}}</p>
+    {% else %}
+    <p>Hello {{x}}</p>
+    {% endif %} {% endfor %}
+  </body>
+</html>
