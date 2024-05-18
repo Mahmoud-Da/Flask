@@ -553,3 +553,86 @@ def login():
 
 to test that our session is permanent we can close the browser after login in then re open it to check if our 
 session still running
+
+
+
+*** Flask Tutorial #6 - Message Flashing *** 
+
+message flashing:
+
+now essentially message flashing is showing some kind of information from a
+previous page on the next page when something happens on the GUI.
+
+example: say we login it redirects me to another page and then maybe on the top
+of that page it says logged in successfully or if we log out maybe we
+gonna get redirected to another page but we want to show on that other page that we
+logged out successfully so we will flash a message in a certain part of that page
+so that the user has some idea what they actually did so it's to give them a
+little bit more interaction with the page some feedback for things 
+that they do so they have an idea what's going on
+
+firs thing to do is is import flash 
+-------------------code----------------------
+from flask import Flask, redirect, url_for, render_template, request, session, flash
+-------------------code----------------------
+
+now in the logout page we want to show logged out successful so that users
+know there wasn't an error if they didn`t log out or to know that they logout successfully
+if they already logout coz without flash message if problem happened the users will still they logout 
+but they still logged to thier account
+
+the second argument is the category and is optional we can set to normla (info) or error and so on
+-------------------code----------------------
+def logout():
+    session.pop("user", None)
+    flash("You have been logged out!", "info")
+    return redirect(url_for("login"))
+-------------------code----------------------
+
+now to displaying all the flash messages that comes out we go to the login page and show all the flash
+messages
+-------------------code----------------------
+{% with messeges = get_flashed_messages() %}
+ {% if messeges %}
+   {% for msg in messeges %}
+     <p>{{msg}}</p>
+   {% endfor %}
+ {% endif %}
+{% endwith %}
+-------------------code----------------------
+
+now we test our code until this point
+
+now we can add another flash message
+-------------------code----------------------
+def logout():
+    if "user" in session:
+        user = session["user"]
+        flash(f"You have been logged out, {user}", "info")
+    session.pop("user", None)
+    flash("You have been logged out!", "info")
+    return redirect(url_for("login"))
+-------------------code----------------------
+
+
+now we add some code to our project first we create simple user.html to say welcome
+to that user 
+
+and add the message flash inside it 
+
+
+and inside the app.py we refactor our user method 
+PS: when redirect(url_for) to function is better to add only name if for html file is better to add .html
+
+-------------------code----------------------
+@app.route("/user")
+def user():
+    if "user" in session:
+        user = session["user"]
+        return render_template("user.html", user=user)
+    else:
+        return redirect(url_for("login"))
+-------------------code----------------------
+
+now we flash the parts
+
