@@ -397,3 +397,159 @@ def login():
     else:
         return render_template("login.html")
 -------------------code----------------------
+
+
+
+*** Flask Tutorial #5 - Sessions ***
+where the user logs in we create
+a session for them that stores the name
+
+and then we can redirect to another page
+that doesn't have slash
+
+fisrt we import session
+-------------------code----------------------
+from flask import Flask, redirect, url_for, render_template, request, session
+-------------------code----------------------
+
+inside a request stop post so when the user presses login or submit or whatever
+on that login page what we're going to do is set up some session data based on
+whatever information they typed in. sessionstores data as a dictionary
+
+so we store user as dictionary in session ,
+-------------------code----------------------
+user = request.form["nm"]
+session["user"] = user
+-------------------code----------------------
+so we can say if we want to create a new piece of information a information in
+my session what we can do is simply type
+
+session the name of whatever we want that dictionary key to be and then set it
+equal to some specific value in this case this is the user 
+
+
+
+now how do we get that information (in our case the user information)
+in the user method (page)
+-------------------code----------------------
+@app.route("/user")
+def user():
+    if user in session:
+        user = session["user"]
+        return f"<h1>{user}</h1>"
+-------------------code----------------------
+
+so to recap all we have to do literally
+to import session at first  then make a dictionary
+key put it aside session and set it equal to a value
+-------------------code----------------------
+ session["user"] = user
+-------------------code----------------------
+
+and then you can access it after you've checked if it exists now
+-------------------code----------------------
+if "user" in session:
+    user = session["user"]
+-------------------code----------------------
+
+what we gonna do if this session does not exist so if
+there's no user in my session
+
+redirect back to the login page and say hey you need to login or whatever it is
+so we just gonna say return redirect URL for in this case login
+and then since we have a get method when we're
+returning over here.
+we will return this render template for login.html they can hit submit and they can redirect
+back to the user page 
+-------------------code----------------------
+def user():
+    if "user" in session:
+        user = session["user"]
+        return f"<h1>{user}</h1>"
+    else:
+        return redirect(url_for("login"))
+-------------------code----------------------
+
+now if we run our code until this point we will have 
+RuntimeError
+RuntimeError: The session is unavailable because no secret key was set.
+
+all of this session data that we store is actually encrypted on the server and
+that means we actually need to define something called a secret key which will
+be the way that we decrypt and encrypt this data
+
+so to do that we are going to set app.secret_key to value 
+it would be wise to make this something somewhat complicated
+-------------------code----------------------
+app.secret_key = "bsadchasbq2@j02$(eqw2q0!)"
+-------------------code----------------------
+
+
+now we go back to http://127.0.0.1:5000/login we try to log in we can test our session
+if it work by move to another link inide the local host after we login then back to http://127.0.0.1:5000/user
+and we can see we still logging in
+
+
+- clearing a session and logging
+want to do is actually create a login page and show you how you can
+manually clear session DAP because essentially if someone logs out you
+probably want to delete all the information associated with their
+session or at least some of that information.
+
+so  first we cerate logout page in this this page we are going to remove the session
+PS: None is the defualt value {do nothing}
+and after we logout we go to the login page
+
+-------------------code----------------------
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login"))
+-------------------code----------------------
+
+
+one more thing to login here we're essentially I check if when we redirect
+to login here if we're already logged in I just redirect us to the user page
+-------------------code----------------------
+def login():
+    if request.method == "POST":
+        user = request.form["nm"]
+        session["user"] = user
+        return redirect(url_for("user"))
+    else:
+        if "user" in session:
+            return redirect(url_for("user"))
+        return render_template("login.html")
+-------------------code----------------------
+
+now to check our code by access the logout after we login 
+
+
+- permanent sessions
+is how we want our information to be stored in our session
+first we import timedelta form datatime
+-------------------code----------------------
+from datetime import timedelta
+-------------------code----------------------
+
+then set the permanent_session_lifetime to the time we want we can use the time we want
+-------------------code----------------------
+app.permanent_session_lifetime = timedelta(minutes=5)
+-------------------code----------------------
+
+now how can we make our session permanent after login we set the session.permanent = True
+-------------------code----------------------
+def login():
+    if request.method == "POST":
+        session.permanent = True
+        user = request.form["nm"]
+        session["user"] = user
+        return redirect(url_for("user"))
+    else:
+        if "user" in session:
+            return redirect(url_for("user"))
+        return render_template("login.html")
+-------------------code----------------------
+
+to test that our session is permanent we can close the browser after login in then re open it to check if our 
+session still running
